@@ -16,6 +16,8 @@ namespace notVampireSurvivor
         int sirkaOkna = 800;
         int vyskaOkna = 800;
 
+        BackgroundManager background;
+        private Texture2D backgroundTexture;
         private Texture2D playerTexture;
         Player hrac;
 
@@ -29,15 +31,15 @@ namespace notVampireSurvivor
 
         protected override void Initialize()
         {
-            sirkaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            vyskaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            sirkaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width/2;
+            vyskaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height/2;
 
             Debug.WriteLine($"sirka {sirkaOkna} vyska {vyskaOkna}");
 
             _graphics.PreferredBackBufferWidth = sirkaOkna;
             _graphics.PreferredBackBufferHeight = vyskaOkna;
-            _graphics.ApplyChanges();
             _graphics.ToggleFullScreen();
+            _graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -48,7 +50,12 @@ namespace notVampireSurvivor
 
             font1 = Content.Load<SpriteFont>("MyMenuFont");
             playerTexture = Content.Load<Texture2D>("Player");
+            backgroundTexture = Content.Load<Texture2D>("background");
 
+            background = new BackgroundManager(_spriteBatch,
+                                               Content.Load<Texture2D>("background"),
+                                               GraphicsDevice.Viewport.Width,
+                                               GraphicsDevice.Viewport.Height);
 
             hrac = new Player(playerTexture, sirkaOkna, vyskaOkna);
 
@@ -70,7 +77,10 @@ namespace notVampireSurvivor
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
+                          SamplerState.LinearWrap, null, null);
+
+            background.Draw(hrac.playerMovement);
 
             _spriteBatch.DrawString(font1, $"X: {hrac.playerMovement.X}    Y: {hrac.playerMovement.Y}", new Vector2(0, 0), Color.White);
             hrac.vykresliSe(_spriteBatch, sirkaOkna, vyskaOkna);

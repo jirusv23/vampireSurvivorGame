@@ -63,11 +63,11 @@ namespace notVampireSurvivor
         {
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                playerMovement.Y += rychlost;
+                playerMovement.Y -= rychlost;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                playerMovement.Y -= rychlost;
+                playerMovement.Y += rychlost;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
