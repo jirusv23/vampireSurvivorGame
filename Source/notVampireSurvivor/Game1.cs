@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -17,7 +16,6 @@ namespace notVampireSurvivor
         int vyskaOkna = 800;
 
         BackgroundManager background;
-        private Texture2D backgroundTexture;
         private Texture2D playerTexture;
         Player hrac;
 
@@ -26,13 +24,13 @@ namespace notVampireSurvivor
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            
+
         }
 
         protected override void Initialize()
         {
-            sirkaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width/2;
-            vyskaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height/2;
+            sirkaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2;
+            vyskaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2;
 
             Debug.WriteLine($"sirka {sirkaOkna} vyska {vyskaOkna}");
 
@@ -49,11 +47,16 @@ namespace notVampireSurvivor
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             font1 = Content.Load<SpriteFont>("MyMenuFont");
+
             playerTexture = Content.Load<Texture2D>("Player");
-            backgroundTexture = Content.Load<Texture2D>("background");
+
+            Texture2D[] textures = new[] {
+                                        Content.Load<Texture2D>("background"),
+                                        Content.Load<Texture2D>("background2"),
+                                        };
 
             background = new BackgroundManager(_spriteBatch,
-                                               Content.Load<Texture2D>("background"),
+                                               textures,
                                                GraphicsDevice.Viewport.Width,
                                                GraphicsDevice.Viewport.Height);
 
