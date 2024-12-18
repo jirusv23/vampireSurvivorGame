@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace notVampireSurvivor
 {
@@ -8,24 +11,33 @@ namespace notVampireSurvivor
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        SpriteFont font1;
 
         int sirkaOkna = 800;
         int vyskaOkna = 800;
 
         private Texture2D playerTexture;
         Player hrac;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            
         }
 
         protected override void Initialize()
         {
+            sirkaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            vyskaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+            Debug.WriteLine($"sirka {sirkaOkna} vyska {vyskaOkna}");
+
             _graphics.PreferredBackBufferWidth = sirkaOkna;
             _graphics.PreferredBackBufferHeight = vyskaOkna;
             _graphics.ApplyChanges();
+            _graphics.ToggleFullScreen();
 
             base.Initialize();
         }
@@ -34,7 +46,9 @@ namespace notVampireSurvivor
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            font1 = Content.Load<SpriteFont>("MyMenuFont");
             playerTexture = Content.Load<Texture2D>("Player");
+
 
             hrac = new Player(playerTexture, sirkaOkna, vyskaOkna);
 
@@ -47,6 +61,7 @@ namespace notVampireSurvivor
                 Exit();
 
             // TODO: Add your update logic here
+            hrac.Pohyb();
 
             base.Update(gameTime);
         }
@@ -57,7 +72,8 @@ namespace notVampireSurvivor
 
             _spriteBatch.Begin();
 
-            hrac.vykresliSe(_spriteBatch);
+            _spriteBatch.DrawString(font1, $"X: {hrac.playerMovement.X}    Y: {hrac.playerMovement.Y}", new Vector2(0, 0), Color.White);
+            hrac.vykresliSe(_spriteBatch, sirkaOkna, vyskaOkna);
 
             _spriteBatch.End();
 
