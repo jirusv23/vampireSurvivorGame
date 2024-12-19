@@ -9,7 +9,7 @@ public class BackgroundManager
     private readonly int _screenWidth;
     private readonly int _screenHeight;
     private readonly int[,] _tileMap;
-    private readonly int _mapSize = 100; // Adjust size as needed
+    private readonly int _mapSize = 100; // Adjust size as needed (how many textures will make one tile)
 
     public BackgroundManager(SpriteBatch spriteBatch, Texture2D[] backgroundTextures, int screenWidth, int screenHeight)
     {
@@ -31,15 +31,13 @@ public class BackgroundManager
         int tileWidth = _backgroundTextures[0].Width;
         int tileHeight = _backgroundTextures[0].Height;
 
-        Vector2 backgroundOffset = new Vector2(
-            worldPosition.X % tileWidth,
-            worldPosition.Y % tileHeight
-        );
+        float offsetX = ((worldPosition.X % tileWidth) + tileWidth) % tileWidth;
+        float offsetY = ((worldPosition.Y % tileHeight) + tileHeight) % tileHeight;
+        Vector2 backgroundOffset = new Vector2(offsetX, offsetY);
 
         int tilesX = (_screenWidth / tileWidth) + 2;
         int tilesY = (_screenHeight / tileHeight) + 2;
 
-        // Calculate starting tile indices based on world position
         int startX = (int)Math.Floor(worldPosition.X / tileWidth);
         int startY = (int)Math.Floor(worldPosition.Y / tileHeight);
 
@@ -47,7 +45,6 @@ public class BackgroundManager
         {
             for (int x = -1; x < tilesX; x++)
             {
-                // Get tile index from map, wrap around using modulo
                 int mapX = Math.Abs((startX + x) % _mapSize);
                 int mapY = Math.Abs((startY + y) % _mapSize);
                 int textureIndex = _tileMap[mapX, mapY];

@@ -15,8 +15,14 @@ namespace notVampireSurvivor
         int sirkaOkna = 800;
         int vyskaOkna = 800;
 
+
         BackgroundManager background;
-        private Texture2D playerTexture;
+        Texture2D playerTexture;
+
+        List<SlimeEnemy> slimeEnemyList;
+        Texture2D slimeTexture;
+        int pocetSlimeEnemy = 1;
+
         Player hrac;
 
         public Game1()
@@ -29,8 +35,8 @@ namespace notVampireSurvivor
 
         protected override void Initialize()
         {
-            sirkaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2;
-            vyskaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2;
+            sirkaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            vyskaOkna = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
             Debug.WriteLine($"sirka {sirkaOkna} vyska {vyskaOkna}");
 
@@ -49,6 +55,7 @@ namespace notVampireSurvivor
             font1 = Content.Load<SpriteFont>("MyMenuFont");
 
             playerTexture = Content.Load<Texture2D>("Player");
+            slimeTexture = Content.Load<Texture2D>("slimeEnemy");
 
             Texture2D[] textures = new[] {
                                         Content.Load<Texture2D>("background"),
@@ -62,6 +69,13 @@ namespace notVampireSurvivor
 
             hrac = new Player(playerTexture, sirkaOkna, vyskaOkna);
 
+            //Adds slime enemies
+            slimeEnemyList = new List<SlimeEnemy>();
+            for (int i = 0; i < pocetSlimeEnemy; i++)
+            {
+                slimeEnemyList.Add(new SlimeEnemy(slimeTexture));
+            }
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -71,7 +85,7 @@ namespace notVampireSurvivor
                 Exit();
 
             // TODO: Add your update logic here
-            hrac.Pohyb();
+            hrac.Pohyb(Keys.W, Keys.S, Keys.A, Keys.D);
 
             base.Update(gameTime);
         }
@@ -87,6 +101,11 @@ namespace notVampireSurvivor
 
             _spriteBatch.DrawString(font1, $"X: {hrac.playerMovement.X}    Y: {hrac.playerMovement.Y}", new Vector2(0, 0), Color.White);
             hrac.vykresliSe(_spriteBatch, sirkaOkna, vyskaOkna);
+
+            foreach(SlimeEnemy s in slimeEnemyList)
+            {
+                s.Draw(_spriteBatch);
+            }
 
             _spriteBatch.End();
 

@@ -23,7 +23,7 @@ namespace notVampireSurvivor
         public Player(Texture2D texture, int sirkaOkna, int vyskaOkna)
         {
             playerTexture = texture;
-            rychlost = 2;
+            rychlost = 10;
 
             dividedLenght = sirkaOkna / division; //lenght of one part of divided screen
             ratio = dividedLenght / playerTexture.Width;
@@ -59,22 +59,22 @@ namespace notVampireSurvivor
                               0.5f); //layer depth (0 is closest)
         }
 
-        public void Pohyb()
+        public void Pohyb(Keys horni, Keys dolni, Keys vlevo, Keys pravo)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            if (Keyboard.GetState().IsKeyDown(horni))
             {
                 playerMovement.Y -= rychlost;
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.S))
+            else if (Keyboard.GetState().IsKeyDown(dolni))
             {
                 playerMovement.Y += rychlost;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            if (Keyboard.GetState().IsKeyDown(pravo))
             {
                 playerMovement.X += rychlost;
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.A))
+            else if (Keyboard.GetState().IsKeyDown(vlevo))
             {
                 playerMovement.X -= rychlost;
             }
