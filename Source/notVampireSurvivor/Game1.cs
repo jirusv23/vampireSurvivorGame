@@ -99,8 +99,7 @@ namespace notVampireSurvivor
 
 
             hrac.Pohyb(Keys.W, Keys.S, Keys.A, Keys.D);
-            if (currentKeyboardState.IsKeyDown(Keys.Space) &&
-                !previousKeyboardState.IsKeyDown(Keys.Space))
+            if ((currentKeyboardState.IsKeyDown(Keys.Space) && !previousKeyboardState.IsKeyDown(Keys.Space)) || slimeEnemyList.Count == 0)
             {
                 SpawnSlimeEnemies(nejdelsiStranaOkna, pocetSlimeEnemy, sirkaOkna, vyskaOkna, hrac, slimeTexture, slimeEnemyList);
             }
@@ -123,11 +122,13 @@ namespace notVampireSurvivor
             {
 
                 s.Draw(_spriteBatch, hrac);
-
                 s.Update(hrac);
+                if (Keyboard.GetState().IsKeyDown(Keys.T))
+                {
+                    s.PohybTowardPlayer(hrac);
+                }
             }
-
-
+            
 
 
             // draws square at world origin (0,0)
@@ -141,7 +142,7 @@ namespace notVampireSurvivor
             _spriteBatch.DrawString(font1, $"Player movement: {hrac.playerMovement.X}  {hrac.playerMovement.Y}", new Vector2(0, 0), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
             _spriteBatch.DrawString(font1, $"MOUSE CORDS (TOWARD CORNER OF SCREEN): {mouse.X}    Y: {mouse.Y}", new Vector2(mouse.X + 5, mouse.Y - 35), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
             _spriteBatch.DrawString(font1, $"X: {-(sirkaOkna / 2 - mouse.X - hrac.playerMovement.X)}    Y: {-(vyskaOkna / 2 - mouse.Y - hrac.playerMovement.Y)}", new Vector2(mouse.X + 5, mouse.Y - 15), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
-            //_spriteBatch.DrawString(font1, $"X: {mouse.X - hrac.playerMovement.X}    Y: {mouse.Y - hrac.playerMovement.Y}", new Vector2(mouse.X + 5, mouse.Y - 15), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
+
 
             _spriteBatch.End();
 
@@ -183,7 +184,7 @@ namespace notVampireSurvivor
 
             for (int i = 0; i < pocet; i++)
             {
-                slimeEnemyList.Add(new SlimeEnemy(slimeTexture, hrac, new Vector2(listOfSpawnPoints[i].X, listOfSpawnPoints[i].Y)));
+                slimeEnemyList.Add(new SlimeEnemy(slimeTexture, hrac, new Vector2(listOfSpawnPoints[i].X, listOfSpawnPoints[i].Y), 5));
             }
         }
     }

@@ -15,7 +15,10 @@ namespace notVampireSurvivor
         Vector2 viewportPosition;
         internal Rectangle slimeRectangle;
         Vector2 playerPosition;
-        public SlimeEnemy(Texture2D sourceTextura, Player hrac, Vector2 spawnPosition)
+
+        Vector2 rychlostVector = new Vector2(0, 0);
+        int rychlost;
+        public SlimeEnemy(Texture2D sourceTextura, Player hrac, Vector2 spawnPosition, int rychlost)
         {
             texture = sourceTextura;
 
@@ -34,6 +37,8 @@ namespace notVampireSurvivor
                                            (int)viewportPosition.Y,
                                            (int)(widthOfTexture * scalingFactor),
                                            (int)(heightOfTexture * scalingFactor));
+
+            this.rychlost = rychlost;
         }
 
         public void Update(Player hrac)
@@ -49,6 +54,22 @@ namespace notVampireSurvivor
             // viewportPosition = new Vector2(positionInWorld.X - playerPosition.X, positionInWorld.Y - playerPosition.Y);
 
             _spriteBatch.Draw(texture, viewportPosition, null, Color.White, 0f, Vector2.Zero, scalingFactor, SpriteEffects.None, 0.9f);
+        }
+
+        public void PohybTowardPlayer(Player hrac)
+        {
+            Vector2 target = new Vector2(hrac.playerHitbox.X, hrac.playerHitbox.Y);
+
+            Vector2 direction = target - positionInWorld;
+            if (direction != Vector2.Zero)
+            {
+                direction.Normalize();
+                positionInWorld += direction * rychlost;
+
+                slimeRectangle.X = (int)direction.X * rychlost;
+                slimeRectangle.Y = (int)direction.Y * rychlost;
+            }
+
         }
     }
 }

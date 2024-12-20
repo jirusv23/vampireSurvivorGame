@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Diagnostics;
 
 namespace notVampireSurvivor
 {
@@ -9,8 +8,8 @@ namespace notVampireSurvivor
     {
         readonly Texture2D playerTexture;
 
-        Rectangle playerHitbox;
-        public Vector2 playerMovement;
+        internal Rectangle playerHitbox;
+        internal Vector2 playerMovement;
 
         int rychlost;
 
@@ -31,14 +30,14 @@ namespace notVampireSurvivor
             vyska = ratio * playerTexture.Height;
 
             // only used for detecting collision - cons
-            playerHitbox = new Rectangle(sirkaOkna / 2 - (int)(sirka) / 2,
-                                         vyskaOkna / 2 - (int)(sirka) / 2,
+            playerHitbox = new Rectangle((sirkaOkna / 2 - (int)(sirka) / 2),
+                                         (vyskaOkna / 2 - (int)(sirka) / 2),
                                          (int)(sirka),
                                          (int)(vyska));
 
             //tracks how the player moved
-            playerMovement = new Vector2(worldOrigin.X - sirkaOkna/2,
-                                         worldOrigin.Y - vyskaOkna/2);
+            playerMovement = new Vector2(worldOrigin.X - sirkaOkna / 2,
+                                         worldOrigin.Y - vyskaOkna / 2);
         }
 
         public void vykresliSe(SpriteBatch _spriteBatch, int sirkaOkna, int vyskaOkna)
@@ -61,19 +60,23 @@ namespace notVampireSurvivor
             if (Keyboard.GetState().IsKeyDown(horni))
             {
                 playerMovement.Y -= rychlost;
+                playerHitbox.Y -= rychlost;
             }
             else if (Keyboard.GetState().IsKeyDown(dolni))
             {
                 playerMovement.Y += rychlost;
+                playerHitbox.Y += rychlost;
             }
 
             if (Keyboard.GetState().IsKeyDown(pravo))
             {
                 playerMovement.X += rychlost;
+                playerHitbox.X += rychlost;
             }
             else if (Keyboard.GetState().IsKeyDown(vlevo))
             {
                 playerMovement.X -= rychlost;
+                playerHitbox.X -= rychlost;
             }
         }
     }
