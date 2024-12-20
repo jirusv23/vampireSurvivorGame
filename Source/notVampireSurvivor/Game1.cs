@@ -28,6 +28,8 @@ namespace notVampireSurvivor
         Player hrac;
         MouseState mouse;
 
+        private KeyboardState currentKeyboardState;
+        private KeyboardState previousKeyboardState;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -45,7 +47,8 @@ namespace notVampireSurvivor
             else
                 nejdelsiStranaOkna = vyskaOkna;
 
-            WorldOrigin = new Vector2(sirkaOkna/2, vyskaOkna/2);
+
+            WorldOrigin = new Vector2(sirkaOkna / 2, vyskaOkna / 2);
 
             Debug.WriteLine($"sirka {sirkaOkna} vyska {vyskaOkna}");
 
@@ -77,29 +80,31 @@ namespace notVampireSurvivor
                                                GraphicsDevice.Viewport.Height);
 
             hrac = new Player(playerTexture, sirkaOkna, vyskaOkna, WorldOrigin);
-
-            //Adds slime enemies
             slimeEnemyList = new List<SlimeEnemy>();
-            List<Vector2> listOfSpawnPoints = GetPointsOnCircle(nejdelsiStranaOkna/2, pocetSlimeEnemy, new Vector2(hrac.playerMovement.X + sirkaOkna/2, hrac.playerMovement.Y + vyskaOkna/2));
 
-            for (int i = 0; i < pocetSlimeEnemy; i++)
-            {
-                slimeEnemyList.Add(new SlimeEnemy(slimeTexture, hrac, new Vector2(listOfSpawnPoints[i].X, listOfSpawnPoints[i].Y)));
-            }
 
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-            hrac.Pohyb(Keys.W, Keys.S, Keys.A, Keys.D);
-
+            // Store the previous keyboard state
+            previousKeyboardState = currentKeyboardState;
+            // Get the current keyboard state
+            currentKeyboardState = Keyboard.GetState();
             mouse = Mouse.GetState();
-            
+
+
+            hrac.Pohyb(Keys.W, Keys.S, Keys.A, Keys.D);
+            if (currentKeyboardState.IsKeyDown(Keys.Space) &&
+                !previousKeyboardState.IsKeyDown(Keys.Space))
+            {
+                SpawnSlimeEnemies(nejdelsiStranaOkna, pocetSlimeEnemy, sirkaOkna, vyskaOkna, hrac, slimeTexture, slimeEnemyList);
+            }
+
             base.Update(gameTime);
         }
 
@@ -114,10 +119,16 @@ namespace notVampireSurvivor
 
             hrac.vykresliSe(_spriteBatch, sirkaOkna, vyskaOkna);
 
-            foreach(SlimeEnemy s in slimeEnemyList)
+            foreach (SlimeEnemy s in slimeEnemyList)
             {
+
                 s.Draw(_spriteBatch, hrac);
+
+                s.Update(hrac);
             }
+
+
+
 
             // draws square at world origin (0,0)
             Rect rect = new Rect(WorldOrigin, hrac, GraphicsDevice, 15, 15, Color.Orange);
@@ -129,7 +140,7 @@ namespace notVampireSurvivor
 
             _spriteBatch.DrawString(font1, $"Player movement: {hrac.playerMovement.X}  {hrac.playerMovement.Y}", new Vector2(0, 0), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
             _spriteBatch.DrawString(font1, $"MOUSE CORDS (TOWARD CORNER OF SCREEN): {mouse.X}    Y: {mouse.Y}", new Vector2(mouse.X + 5, mouse.Y - 35), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
-            _spriteBatch.DrawString(font1, $"X: {-(sirkaOkna/2 - mouse.X)}    Y: {-(vyskaOkna/2 - mouse.Y)}", new Vector2(mouse.X + 5, mouse.Y - 15), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
+            _spriteBatch.DrawString(font1, $"X: {-(sirkaOkna / 2 - mouse.X - hrac.playerMovement.X)}    Y: {-(vyskaOkna / 2 - mouse.Y - hrac.playerMovement.Y)}", new Vector2(mouse.X + 5, mouse.Y - 15), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
             //_spriteBatch.DrawString(font1, $"X: {mouse.X - hrac.playerMovement.X}    Y: {mouse.Y - hrac.playerMovement.Y}", new Vector2(mouse.X + 5, mouse.Y - 15), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
 
             _spriteBatch.End();
@@ -165,10 +176,9 @@ namespace notVampireSurvivor
             return points;
         }
 
-        internal static void SpawnSlimeEnemies(int nejdelsiStranaOkna, int pocet, int sirkaOkna, int vyskaOkna, Player hrac, Texture2D slimeTexture)
+        internal static void SpawnSlimeEnemies(int nejdelsiStranaOkna, int pocet, int sirkaOkna, int vyskaOkna, Player hrac, Texture2D slimeTexture, List<SlimeEnemy> slimeEnemyList)
         {
             //Adds slime enemies
-            List<SlimeEnemy> slimeEnemyList = new List<SlimeEnemy>();
             List<Vector2> listOfSpawnPoints = GetPointsOnCircle(nejdelsiStranaOkna / 2, pocet, new Vector2(hrac.playerMovement.X + sirkaOkna / 2, hrac.playerMovement.Y + vyskaOkna / 2));
 
             for (int i = 0; i < pocet; i++)

@@ -36,5 +36,10 @@ namespace notVampireSurvivor
 
             _spriteBatch.Draw(texture, viewportPosition, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
         }
+
+        public void DrawAbsolutly(SpriteBatch _spriteBatch)
+        {
+            _spriteBatch.Draw(texture, positionInWorld, Color.SkyBlue);
+        }
     }
 }
