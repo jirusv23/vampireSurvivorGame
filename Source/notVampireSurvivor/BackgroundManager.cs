@@ -54,7 +54,7 @@ public class BackgroundManager
                     (y * tileHeight) - backgroundOffset.Y
                 );
 
-                _spriteBatch.Draw(_backgroundTextures[textureIndex], position, Color.White);
+                _spriteBatch.Draw(_backgroundTextures[textureIndex], position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
             }
         }
     }

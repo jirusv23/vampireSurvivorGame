@@ -36,7 +36,6 @@ namespace notVampireSurvivor
                                          (int)(sirka),
                                          (int)(vyska));
 
-
             //tracks how the player moved
             playerMovement = new Vector2(playerHitbox.X,
                                          playerHitbox.Y);

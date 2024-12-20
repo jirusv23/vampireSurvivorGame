@@ -13,16 +13,17 @@ namespace notVampireSurvivor
 
         Vector2 positionInWorld;
         Vector2 viewportPosition;
-        public SlimeEnemy(Texture2D sourceTextura, Player hrac)
+        public SlimeEnemy(Texture2D sourceTextura, Player hrac, Vector2 spawnPosition)
         {
             texture = sourceTextura;
 
             int targetedWidth = 72;
             int widthOfTexture = texture.Width;
+            int heightOfTexture = texture.Height;
             float ratio = (float)targetedWidth / (float)widthOfTexture;
             scalingFactor = ratio;
 
-            positionInWorld = new Vector2(500, 250);
+            positionInWorld = new Vector2(spawnPosition.X - widthOfTexture/2, spawnPosition.Y - heightOfTexture/2);
 
             Vector2 playerPosition = hrac.playerMovement;
             viewportPosition = new Vector2(positionInWorld.X - playerPosition.X, positionInWorld.Y - playerPosition.Y);
@@ -33,7 +34,7 @@ namespace notVampireSurvivor
             Vector2 playerPosition = hrac.playerMovement;
             viewportPosition = new Vector2(positionInWorld.X - playerPosition.X, positionInWorld.Y - playerPosition.Y);
 
-            _spriteBatch.Draw(texture, viewportPosition, null, Color.White, 0f, Vector2.Zero, scalingFactor, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(texture, viewportPosition, null, Color.White, 0f, Vector2.Zero, scalingFactor, SpriteEffects.None, 1f);
         }
     }
 }

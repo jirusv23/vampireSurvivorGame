@@ -24,6 +24,8 @@ namespace notVampireSurvivor
         int pocetSlimeEnemy = 1;
 
         Player hrac;
+        Rect rect;
+        MouseState mouse;
 
         public Game1()
         {
@@ -68,12 +70,13 @@ namespace notVampireSurvivor
                                                GraphicsDevice.Viewport.Height);
 
             hrac = new Player(playerTexture, sirkaOkna, vyskaOkna);
+            rect = new Rect(new Vector2(0, 0), hrac, GraphicsDevice, 5, 5);
 
             //Adds slime enemies
             slimeEnemyList = new List<SlimeEnemy>();
             for (int i = 0; i < pocetSlimeEnemy; i++)
             {
-                slimeEnemyList.Add(new SlimeEnemy(slimeTexture, hrac));
+                slimeEnemyList.Add(new SlimeEnemy(slimeTexture, hrac, new Vector2(0, 0)));
             }
 
             // TODO: use this.Content to load your game content here
@@ -87,6 +90,8 @@ namespace notVampireSurvivor
             // TODO: Add your update logic here
             hrac.Pohyb(Keys.W, Keys.S, Keys.A, Keys.D);
 
+            mouse = Mouse.GetState();
+            
             base.Update(gameTime);
         }
 
@@ -99,13 +104,19 @@ namespace notVampireSurvivor
 
             background.Draw(hrac.playerMovement);
 
-            _spriteBatch.DrawString(font1, $"X: {hrac.playerMovement.X}    Y: {hrac.playerMovement.Y}", new Vector2(0, 0), Color.White);
+            
+
+
             hrac.vykresliSe(_spriteBatch, sirkaOkna, vyskaOkna);
 
             foreach(SlimeEnemy s in slimeEnemyList)
             {
                 s.Draw(_spriteBatch, hrac);
             }
+            rect.Draw(_spriteBatch, hrac);
+
+            _spriteBatch.DrawString(font1, $"X: {hrac.playerMovement.X}    Y: {hrac.playerMovement.Y}", new Vector2(0, 0), Color.White);
+            _spriteBatch.DrawString(font1, $"X: {mouse.X}    Y: {mouse.Y}", new Vector2(mouse.X + 5, mouse.Y - 15), Color.White);
 
             _spriteBatch.End();
 
