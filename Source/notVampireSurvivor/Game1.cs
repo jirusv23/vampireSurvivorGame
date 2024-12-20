@@ -73,7 +73,7 @@ namespace notVampireSurvivor
             slimeEnemyList = new List<SlimeEnemy>();
             for (int i = 0; i < pocetSlimeEnemy; i++)
             {
-                slimeEnemyList.Add(new SlimeEnemy(slimeTexture));
+                slimeEnemyList.Add(new SlimeEnemy(slimeTexture, hrac));
             }
 
             // TODO: use this.Content to load your game content here
@@ -104,7 +104,7 @@ namespace notVampireSurvivor
 
             foreach(SlimeEnemy s in slimeEnemyList)
             {
-                s.Draw(_spriteBatch);
+                s.Draw(_spriteBatch, hrac);
             }
 
             _spriteBatch.End();
