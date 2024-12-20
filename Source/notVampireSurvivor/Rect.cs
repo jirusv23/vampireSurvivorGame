@@ -13,12 +13,12 @@ namespace notVampireSurvivor
 
         Texture2D texture;
 
-        public Rect(Vector2 position, Player hrac, GraphicsDevice graphics, int sirka, int vyska)
+        public Rect(Vector2 position, Player hrac, GraphicsDevice graphics, int sirka, int vyska, Color color)
         {
             texture = new Texture2D(graphics, sirka, vyska);
 
             Color[] data = new Color[sirka * vyska];
-            for (int i = 0; i < data.Length; ++i) data[i] = Color.Chocolate;
+            for (int i = 0; i < data.Length; ++i) data[i] = color;
             texture.SetData(data);
 
             this.positionInWorld = position;

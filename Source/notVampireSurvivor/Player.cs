@@ -20,7 +20,7 @@ namespace notVampireSurvivor
         float sirka;
         float vyska;
 
-        public Player(Texture2D texture, int sirkaOkna, int vyskaOkna)
+        public Player(Texture2D texture, int sirkaOkna, int vyskaOkna, Vector2 worldOrigin)
         {
             playerTexture = texture;
             rychlost = 10;
@@ -37,18 +37,16 @@ namespace notVampireSurvivor
                                          (int)(vyska));
 
             //tracks how the player moved
-            playerMovement = new Vector2(playerHitbox.X,
-                                         playerHitbox.Y);
-
-
+            playerMovement = new Vector2(worldOrigin.X - sirkaOkna/2,
+                                         worldOrigin.Y - vyskaOkna/2);
         }
 
         public void vykresliSe(SpriteBatch _spriteBatch, int sirkaOkna, int vyskaOkna)
         {
             // Draws player always in the middle of the screen
             _spriteBatch.Draw(playerTexture,
-                              new Vector2(playerHitbox.X,
-                                          playerHitbox.Y),
+                              new Vector2(sirkaOkna / 2 - (int)(sirka) / 2,
+                                         vyskaOkna / 2 - (int)(sirka) / 2),
                               null,
                               Color.White,
                               0f,

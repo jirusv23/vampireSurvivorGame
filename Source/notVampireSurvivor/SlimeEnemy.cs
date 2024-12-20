@@ -23,7 +23,7 @@ namespace notVampireSurvivor
             float ratio = (float)targetedWidth / (float)widthOfTexture;
             scalingFactor = ratio;
 
-            positionInWorld = new Vector2(spawnPosition.X - widthOfTexture/2, spawnPosition.Y - heightOfTexture/2);
+            positionInWorld = new Vector2(spawnPosition.X - widthOfTexture*scalingFactor/2, spawnPosition.Y - heightOfTexture*scalingFactor / 2);
 
             Vector2 playerPosition = hrac.playerMovement;
             viewportPosition = new Vector2(positionInWorld.X - playerPosition.X, positionInWorld.Y - playerPosition.Y);
