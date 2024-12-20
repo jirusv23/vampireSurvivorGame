@@ -34,7 +34,7 @@ namespace notVampireSurvivor
             Vector2 playerPosition = hrac.playerMovement;
             viewportPosition = new Vector2(positionInWorld.X - playerPosition.X, positionInWorld.Y - playerPosition.Y);
 
-            _spriteBatch.Draw(texture, viewportPosition, null, Color.White, 0f, Vector2.Zero, scalingFactor, SpriteEffects.None, 1f);
+            _spriteBatch.Draw(texture, viewportPosition, null, Color.White, 0f, Vector2.Zero, scalingFactor, SpriteEffects.None, 0.9f);
         }
     }
 }

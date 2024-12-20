@@ -70,7 +70,7 @@ namespace notVampireSurvivor
                                                GraphicsDevice.Viewport.Height);
 
             hrac = new Player(playerTexture, sirkaOkna, vyskaOkna);
-            rect = new Rect(new Vector2(0, 0), hrac, GraphicsDevice, 5, 5);
+            rect = new Rect(new Vector2(0, 0), hrac, GraphicsDevice, 15, 15);
 
             //Adds slime enemies
             slimeEnemyList = new List<SlimeEnemy>();
@@ -99,7 +99,7 @@ namespace notVampireSurvivor
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend,
                           SamplerState.LinearWrap, null, null);
 
             background.Draw(hrac.playerMovement);
@@ -113,10 +113,12 @@ namespace notVampireSurvivor
             {
                 s.Draw(_spriteBatch, hrac);
             }
+
             rect.Draw(_spriteBatch, hrac);
 
-            _spriteBatch.DrawString(font1, $"X: {hrac.playerMovement.X}    Y: {hrac.playerMovement.Y}", new Vector2(0, 0), Color.White);
-            _spriteBatch.DrawString(font1, $"X: {mouse.X}    Y: {mouse.Y}", new Vector2(mouse.X + 5, mouse.Y - 15), Color.White);
+            _spriteBatch.DrawString(font1, $"X: {hrac.playerMovement.X}    Y: {hrac.playerMovement.Y}", new Vector2(0, 0), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
+            _spriteBatch.DrawString(font1, $"X: {mouse.X}    Y: {mouse.Y}", new Vector2(mouse.X + 5, mouse.Y - 35), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
+            _spriteBatch.DrawString(font1, $"X: {mouse.X + hrac.playerMovement.X}    Y: {mouse.Y + hrac.playerMovement.Y}", new Vector2(mouse.X + 5, mouse.Y - 15), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
 
             _spriteBatch.End();
 
